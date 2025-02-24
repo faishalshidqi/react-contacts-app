@@ -94,7 +94,7 @@ async function getContacts() {
 }
 
 async function deleteContact(id: string) {
-    const response = await fetchApiWithToken(`${BASE_URL}/contacts/${id}}`, {
+    const response = await fetchApiWithToken(`${BASE_URL}/contacts/${id}`, {
         method: 'DELETE',
         headers: {},
         body: ""
