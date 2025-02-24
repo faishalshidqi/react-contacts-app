@@ -1,23 +1,58 @@
-import Navigation from "./Navigation.tsx";
-import {Route, Routes} from "react-router-dom";
-import HomePage from "../pages/HomePage.tsx";
-import AddContactPage from "../pages/AddContactPage.tsx";
+import Navigation from "./Navigation.tsx"
+import {Route, Routes} from "react-router-dom"
+import HomePage from "../pages/HomePage.tsx"
+import AddContactPage from "../pages/AddContactPage.tsx"
 import {Component} from "react"
-import RegisterPage from "../pages/RegisterPage.tsx";
+import RegisterPage from "../pages/RegisterPage.tsx"
+import LoginPage from "../pages/LoginPage.tsx"
+import {getUserLogged, setAccessToken} from "../utils/api.ts";
 
-export default class ContactApp extends Component<unknown, {userAuthed: {id: string, name: string}}> {
+export default class ContactApp extends Component<unknown, {userAuthed: {id: string, name: string, email: string}}> {
     constructor(props: unknown) {
         super(props)
         this.state = {
             userAuthed: {
                 id: '',
                 name: '',
+                email: '',
             },
         }
+        this.onLoginSuccess = this.onLoginSuccess.bind(this)
+    }
+    async onLoginSuccess({accessToken}: {accessToken: string}) {
+        setAccessToken(accessToken)
+        const {data} = await getUserLogged()
+        this.setState(() => {
+
+            return {
+                userAuthed: {
+                    id: data.id,
+                    name: data.name,
+                    email: data.email,
+                },
+            }
+        })
     }
     render() {
-        console.log(!this.state.userAuthed);
-        if (this.state.userAuthed.id && this.state.userAuthed.name) {
+        console.log(this.state.userAuthed)
+        console.log(`not authd: ${!this.state.userAuthed}`)
+        if (this.state.userAuthed.id === '') {
+            return (
+                <div className='contact-app'>
+                    <header className='contact-app__header'>
+                        <h1>Contacts App</h1>
+                        <Navigation/>
+                    </header>
+                    <main>
+                        <Routes>
+                            <Route path='/*' element={<LoginPage loginSuccess={this.onLoginSuccess}/>}/>
+                            <Route path='/register' element={<RegisterPage/>}/>
+                        </Routes>
+                    </main>
+                </div>
+            )
+        }
+
             return (
                 <div className='contact-app'>
                     <header className='contact-app__header'>
@@ -32,38 +67,22 @@ export default class ContactApp extends Component<unknown, {userAuthed: {id: str
                     </main>
                 </div>
             )
-        }
-
-        return (
-            <div className='contact-app'>
-                <header className='contact-app__header'>
-                    <h1>Contacts App</h1>
-                    <Navigation/>
-                </header>
-                <main>
-                    <Routes>
-                        <Route path='/*' element={<p>Halaman Login</p>}/>
-                        <Route path='/register' element={<RegisterPage/>}/>
-                    </Routes>
-                </main>
-            </div>
-        )
     }
 }
 
 /*
 type ContactState = {
-    contacts: Contact[];
+    contacts: Contact[]
 }
 
 export default class ContactApp extends React.Component<unknown, ContactState> {
     constructor(props: {contacts: Contact[], onDelete: (id: number) => void}) {
-        super(props);
+        super(props)
         this.state = {
             contacts: getContacts(),
         }
-        this.onDeleteHandler = this.onDeleteHandler.bind(this);
-        this.onAddContactHandler = this.onAddContactHandler.bind(this);
+        this.onDeleteHandler = this.onDeleteHandler.bind(this)
+        this.onAddContactHandler = this.onAddContactHandler.bind(this)
     }
     render() {
         return (

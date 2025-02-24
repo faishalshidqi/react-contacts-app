@@ -12,8 +12,8 @@ async function fetchApiWithToken(url: string,
                                  options: {
                                      headers: object,
                                      method: 'POST' | 'GET' | 'PUT' | 'DELETE',
-                                     body: string
-                                 } = {headers: {}, method: 'GET', body: ''}) {
+                                     body?: string
+                                 } = {headers: {}, method: 'GET', body: undefined}) {
     return fetch(url, {
         ...options,
         headers: {

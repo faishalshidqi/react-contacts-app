@@ -1,7 +1,7 @@
 import {Component} from "react"
 
 export default class RegisterUserInput extends Component<{onRegister: ({email, password, name}: {email: string, password: string, name: string}) => void}, {name: string, email: string, password: string}> {
-    constructor(props: { onRegister: ({ email, password, name }: { email: string; password: string; name: string }) => void }) {
+    constructor(props: { onRegister: ({ email, password, name }: { email: string, password: string, name: string }) => void }) {
         super(props)
         this.state = {
             name: '',
@@ -33,7 +33,7 @@ export default class RegisterUserInput extends Component<{onRegister: ({email, p
             }
         })
     }
-    onSubmitHandler = (event: { preventDefault: () => void; })=>  {
+    onSubmitHandler = (event: { preventDefault: () => void })=>  {
         event.preventDefault()
         this.props.onRegister(this.state)
         this.setState(() => {

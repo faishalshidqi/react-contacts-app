@@ -1,5 +1,5 @@
-import {Link} from "react-router-dom";
-import {FiHome, FiPlus} from "react-icons/fi";
+import {Link} from "react-router-dom"
+import {FiHome, FiPlus} from "react-icons/fi"
 
 export default function Navigation() {
     return (

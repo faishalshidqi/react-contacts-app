@@ -1,13 +1,13 @@
-import ContactList from "../components/ContactList";
-import {deleteContact, getContacts} from "../utils/data.ts";
-import {Component} from "react";
-import Contact from "../utils/contact.ts";
-import SearchBar from "../components/SearchBar.tsx";
-import {useSearchParams} from "react-router-dom";
+import ContactList from "../components/ContactList"
+import {deleteContact, getContacts} from "../utils/data.ts"
+import {Component} from "react"
+import Contact from "../utils/contact.ts"
+import SearchBar from "../components/SearchBar.tsx"
+import {useSearchParams} from "react-router-dom"
 
 export default function HomePageWrapper() {
     const [searchParams, setSearchParams] = useSearchParams()
-    const keyword = searchParams.get("keyword") !== null ? searchParams.get("keyword")! : '';
+    const keyword = searchParams.get("keyword") !== null ? searchParams.get("keyword")! : ''
 
     function changeSearchParams(keyword: string) {
         setSearchParams({keyword})
@@ -17,18 +17,18 @@ export default function HomePageWrapper() {
 }
 
 class HomePage extends Component<{defaultKeyword: string, keywordChange: (keyword: string) => void}, {contacts: Contact[], keyword: string}> {
-    constructor(props: { defaultKeyword: string; keywordChange: (keyword: string) => void; }) {
-        super(props);
+    constructor(props: { defaultKeyword: string, keywordChange: (keyword: string) => void }) {
+        super(props)
         this.state = {
             contacts: getContacts(),
             keyword: props.defaultKeyword || '',
         }
-        this.onDeleteHandler = this.onDeleteHandler.bind(this);
-        this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this);
+        this.onDeleteHandler = this.onDeleteHandler.bind(this)
+        this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this)
     }
     onDeleteHandler(id: number) {
-        deleteContact(id);
-        this.setState({ contacts: getContacts() });
+        deleteContact(id)
+        this.setState({ contacts: getContacts() })
     }
     onKeywordChangeHandler(keyword: string) {
         this.setState(() => {
@@ -36,11 +36,11 @@ class HomePage extends Component<{defaultKeyword: string, keywordChange: (keywor
                 keyword: keyword
             }
         })
-        this.props.keywordChange(keyword);
+        this.props.keywordChange(keyword)
     }
     render() {
         const contacts = this.state.contacts.filter((contact) => {
-            return contact.name.toLowerCase().includes(this.state.keyword.toLowerCase());
+            return contact.name.toLowerCase().includes(this.state.keyword.toLowerCase())
         })
         return (
             <section>

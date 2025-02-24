@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 type ContactInputState = {
     name: string,
@@ -11,7 +11,7 @@ type ContactInputProps = {
 
 export default class ContactInput extends React.Component<ContactInputProps, ContactInputState> {
     constructor(props: ContactInputProps) {
-        super(props);
+        super(props)
         this.state = {
             name: '',
             tag: '',
@@ -20,15 +20,15 @@ export default class ContactInput extends React.Component<ContactInputProps, Con
         this.onNameChangeEventHandler = this.onNameChangeEventHandler.bind(this)
         this.onTagChangeEventHandler = this.onTagChangeEventHandler.bind(this)
     }
-    onNameChangeEventHandler(event: { target: { value: string; }; }) {
-        this.setState(() => ({ name: event.target.value }));
+    onNameChangeEventHandler(event: { target: { value: string } }) {
+        this.setState(() => ({ name: event.target.value }))
     }
-    onTagChangeEventHandler(event: { target: { value: string; }; }) {
-        this.setState(() => ({ tag: event.target.value }));
+    onTagChangeEventHandler(event: { target: { value: string } }) {
+        this.setState(() => ({ tag: event.target.value }))
     }
-    onSubmit(event: { preventDefault: () => void; }) {
-        event.preventDefault();
-        this.props.addContact(this.state);
+    onSubmit(event: { preventDefault: () => void }) {
+        event.preventDefault()
+        this.props.addContact(this.state)
     }
     render() {
         return (

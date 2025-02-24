@@ -1,4 +1,4 @@
-function ContactItemBody({name, tag}: {name: string; tag: string}) {
+function ContactItemBody({name, tag}: {name: string, tag: string}) {
     return (
         <div className='contact-item__body'>
             <h3 className='contact-item__title'>{name}</h3>
