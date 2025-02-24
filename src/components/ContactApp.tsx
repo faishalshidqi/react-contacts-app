@@ -7,7 +7,7 @@ import RegisterPage from "../pages/RegisterPage.tsx"
 import LoginPage from "../pages/LoginPage.tsx"
 import {getUserLogged, setAccessToken} from "../utils/api.ts";
 
-export default class ContactApp extends Component<unknown, {userAuthed: {id: string, name: string, email: string}}> {
+export default class ContactApp extends Component<unknown, {userAuthed: {id: string, name: string, email: string}, initializing: boolean}> {
     constructor(props: unknown) {
         super(props)
         this.state = {
@@ -16,6 +16,7 @@ export default class ContactApp extends Component<unknown, {userAuthed: {id: str
                 name: '',
                 email: '',
             },
+            initializing: true,
         }
         this.onLoginSuccess = this.onLoginSuccess.bind(this)
     }
@@ -33,9 +34,19 @@ export default class ContactApp extends Component<unknown, {userAuthed: {id: str
             }
         })
     }
+    async componentDidMount() {
+        const {data} = await getUserLogged()
+        this.setState(() => {
+            return {
+                userAuthed: data,
+                initializing: false,
+            }
+        })
+    }
     render() {
-        console.log(this.state.userAuthed)
-        console.log(`not authd: ${!this.state.userAuthed}`)
+        if (this.state.initializing) {
+            return <p>Loading...</p>
+        }
         if (this.state.userAuthed.id === '') {
             return (
                 <div className='contact-app'>
