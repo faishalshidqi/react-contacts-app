@@ -3,6 +3,7 @@ import {Route, Routes} from "react-router-dom";
 import HomePage from "../pages/HomePage.tsx";
 import AddContactPage from "../pages/AddContactPage.tsx";
 import {Component} from "react"
+import RegisterPage from "../pages/RegisterPage.tsx";
 
 export default class ContactApp extends Component<unknown, {userAuthed: {id: string, name: string}}> {
     constructor(props: unknown) {
@@ -16,7 +17,7 @@ export default class ContactApp extends Component<unknown, {userAuthed: {id: str
     }
     render() {
         console.log(!this.state.userAuthed);
-        if (!this.state.userAuthed) {
+        if (this.state.userAuthed.id && this.state.userAuthed.name) {
             return (
                 <div className='contact-app'>
                     <header className='contact-app__header'>
@@ -42,7 +43,7 @@ export default class ContactApp extends Component<unknown, {userAuthed: {id: str
                 <main>
                     <Routes>
                         <Route path='/*' element={<p>Halaman Login</p>}/>
-                        <Route path='/register' element={<p>Halaman Register</p>}/>
+                        <Route path='/register' element={<RegisterPage/>}/>
                     </Routes>
                 </main>
             </div>
