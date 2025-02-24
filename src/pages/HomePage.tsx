@@ -26,9 +26,19 @@ class HomePage extends Component<{defaultKeyword: string, keywordChange: (keywor
         this.onDeleteHandler = this.onDeleteHandler.bind(this)
         this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this)
     }
-    onDeleteHandler(id: number) {
-        deleteContact(id)
-        this.setState({ contacts: getContacts() })
+    async componentDidMount() {
+        const {data} = await getContacts()
+        this.setState(() => {
+            return {
+                contacts: data
+            }
+        })
+    }
+
+    async onDeleteHandler(id: string) {
+        await deleteContact(id)
+        const {data} = await getContacts()
+        this.setState({ contacts: data })
     }
     onKeywordChangeHandler(keyword: string) {
         this.setState(() => {
