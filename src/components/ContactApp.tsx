@@ -2,22 +2,52 @@ import Navigation from "./Navigation.tsx";
 import {Route, Routes} from "react-router-dom";
 import HomePage from "../pages/HomePage.tsx";
 import AddContactPage from "../pages/AddContactPage.tsx";
+import {Component} from "react"
 
-export default function ContactApp() {
-    return (
-        <div className='contact-app'>
-            <header className='contact-app__header'>
-                <h1>Contacts App</h1>
-                <Navigation/>
-            </header>
-            <main>
-                <Routes>
-                    <Route path='/' element={<HomePage/>}/>
-                    <Route path='/add' element={<AddContactPage/>}/>
-                </Routes>
-            </main>
-        </div>
-    )
+export default class ContactApp extends Component<unknown, {userAuthed: {id: string, name: string}}> {
+    constructor(props: unknown) {
+        super(props)
+        this.state = {
+            userAuthed: {
+                id: '',
+                name: '',
+            },
+        }
+    }
+    render() {
+        console.log(!this.state.userAuthed);
+        if (!this.state.userAuthed) {
+            return (
+                <div className='contact-app'>
+                    <header className='contact-app__header'>
+                        <h1>Contacts App</h1>
+                        <Navigation/>
+                    </header>
+                    <main>
+                        <Routes>
+                            <Route path='/' element={<HomePage/>}/>
+                            <Route path='/add' element={<AddContactPage/>}/>
+                        </Routes>
+                    </main>
+                </div>
+            )
+        }
+
+        return (
+            <div className='contact-app'>
+                <header className='contact-app__header'>
+                    <h1>Contacts App</h1>
+                    <Navigation/>
+                </header>
+                <main>
+                    <Routes>
+                        <Route path='/*' element={<p>Halaman Login</p>}/>
+                        <Route path='/register' element={<p>Halaman Register</p>}/>
+                    </Routes>
+                </main>
+            </div>
+        )
+    }
 }
 
 /*
