@@ -19,6 +19,7 @@ export default class ContactApp extends Component<unknown, {userAuthed: {id: str
             initializing: true,
         }
         this.onLoginSuccess = this.onLoginSuccess.bind(this)
+        this.onLogout = this.onLogout.bind(this)
     }
     async onLoginSuccess({accessToken}: {accessToken: string}) {
         setAccessToken(accessToken)
@@ -26,13 +27,21 @@ export default class ContactApp extends Component<unknown, {userAuthed: {id: str
         this.setState(() => {
 
             return {
-                userAuthed: {
-                    id: data.id,
-                    name: data.name,
-                    email: data.email,
-                },
+                userAuthed: data,
             }
         })
+    }
+    onLogout() {
+        this.setState(() => {
+            return {
+                userAuthed: {
+                    id: '',
+                    name: '',
+                    email: '',
+                }
+            }
+        })
+        setAccessToken('')
     }
     async componentDidMount() {
         const {data} = await getUserLogged()
@@ -45,14 +54,13 @@ export default class ContactApp extends Component<unknown, {userAuthed: {id: str
     }
     render() {
         if (this.state.initializing) {
-            return <p>Loading...</p>
+            return null
         }
-        if (this.state.userAuthed.id === '') {
+        if (!this.state.userAuthed.id && !this.state.userAuthed.email && !this.state.userAuthed.name) {
             return (
                 <div className='contact-app'>
                     <header className='contact-app__header'>
                         <h1>Contacts App</h1>
-                        <Navigation/>
                     </header>
                     <main>
                         <Routes>
@@ -64,20 +72,20 @@ export default class ContactApp extends Component<unknown, {userAuthed: {id: str
             )
         }
 
-            return (
-                <div className='contact-app'>
-                    <header className='contact-app__header'>
-                        <h1>Contacts App</h1>
-                        <Navigation/>
-                    </header>
-                    <main>
-                        <Routes>
-                            <Route path='/' element={<HomePage/>}/>
-                            <Route path='/add' element={<AddContactPage/>}/>
-                        </Routes>
-                    </main>
-                </div>
-            )
+        return (
+            <div className='contact-app'>
+                <header className='contact-app__header'>
+                    <h1>Contacts App</h1>
+                    <Navigation logout={this.onLogout} name={this.state.userAuthed.name}/>
+                </header>
+                <main>
+                    <Routes>
+                        <Route path='/' element={<HomePage/>}/>
+                        <Route path='/add' element={<AddContactPage/>}/>
+                    </Routes>
+                </main>
+            </div>
+        )
     }
 }
 
