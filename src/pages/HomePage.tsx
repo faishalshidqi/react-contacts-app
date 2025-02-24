@@ -1,5 +1,5 @@
 import ContactList from "../components/ContactList"
-import {deleteContact, getContacts} from "../utils/data.ts"
+import {deleteContact, getContacts} from "../utils/api.ts"
 import {Component} from "react"
 import Contact from "../utils/contact.ts"
 import SearchBar from "../components/SearchBar.tsx"
@@ -20,8 +20,8 @@ class HomePage extends Component<{defaultKeyword: string, keywordChange: (keywor
     constructor(props: { defaultKeyword: string, keywordChange: (keyword: string) => void }) {
         super(props)
         this.state = {
-            contacts: getContacts(),
-            keyword: props.defaultKeyword || '',
+            contacts: [],
+            keyword: props.defaultKeyword,
         }
         this.onDeleteHandler = this.onDeleteHandler.bind(this)
         this.onKeywordChangeHandler = this.onKeywordChangeHandler.bind(this)
