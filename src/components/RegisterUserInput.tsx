@@ -1,7 +1,7 @@
 import {Component} from "react"
 
-export default class RegisterUserInput extends Component<unknown, {name: string, email: string, password: string}> {
-    constructor(props: unknown) {
+export default class RegisterUserInput extends Component<{onRegister: ({email, password, name}: {email: string, password: string, name: string}) => void}, {name: string, email: string, password: string}> {
+    constructor(props: { onRegister: ({ email, password, name }: { email: string; password: string; name: string }) => void }) {
         super(props)
         this.state = {
             name: '',
@@ -33,12 +33,23 @@ export default class RegisterUserInput extends Component<unknown, {name: string,
             }
         })
     }
+    onSubmitHandler = (event: { preventDefault: () => void; })=>  {
+        event.preventDefault()
+        this.props.onRegister(this.state)
+        this.setState(() => {
+            return {
+                name: '',
+                email: '',
+                password: ''
+            }
+        })
+}
     render() {
         return (
-            <form>
-                <input type='text' placeholder='Name' value={'name'} onChange={this.onNameChange}/>
-                <input type='email' placeholder='Email' value={'email'} onChange={this.onEmailChange}/>
-                <input type='password' placeholder='Password' autoComplete='current-password' value={'password'} onChange={this.onPasswordChange}/>
+            <form className='register-input' onSubmit={this.onSubmitHandler}>
+                <input type='text' placeholder='Name' value={this.state.name} onChange={this.onNameChange}/>
+                <input type='email' placeholder='Email' value={this.state.email} onChange={this.onEmailChange}/>
+                <input type='password' placeholder='Password' autoComplete='current-password' value={this.state.password} onChange={this.onPasswordChange}/>
                 <button>Register</button>
             </form>
         )
