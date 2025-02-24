@@ -1,10 +1,13 @@
 import RegisterUserInput from "../components/RegisterUserInput.tsx";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {register} from "../utils/api.ts";
 
 export default function RegisterPage() {
+    const navigate = useNavigate()
+
     async function onRegisterHandler({name, email, password}: {name: string, email: string, password: string}) {
-        await register({name, email, password});
+        const {error} = await register({name, email, password});
+        if (!error) navigate('/')
     }
     return (
         <section className="register-page">
