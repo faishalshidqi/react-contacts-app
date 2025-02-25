@@ -28,13 +28,15 @@ export default class ContactApp extends Component<unknown, ContactAppState> {
             },
             initializing: true,
             localeContext: {
-                locale: 'id',
+                locale: localStorage.getItem('locale') || 'id',
                 toggleLocale: () => {
                     this.setState((prevState) => {
+                        const newLocale = prevState.localeContext.locale === 'id' ? 'en': 'id'
+                        localStorage.setItem('locale', newLocale)
                         return {
                             localeContext: {
                                 ...prevState.localeContext,
-                                locale: prevState.localeContext.locale === 'id' ? 'en': 'id'
+                                locale: newLocale
                             }
                         }
                     })
