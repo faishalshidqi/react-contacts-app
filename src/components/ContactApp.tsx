@@ -6,8 +6,18 @@ import {Component} from "react"
 import RegisterPage from "../pages/RegisterPage.tsx"
 import LoginPage from "../pages/LoginPage.tsx"
 import {getUserLogged, setAccessToken} from "../utils/api.ts";
+import {LocaleProvider} from "../contexts/LocaleContext.ts";
 
-export default class ContactApp extends Component<unknown, {userAuthed: {id: string, name: string, email: string}, initializing: boolean}> {
+type ContactAppState = {
+    initializing: boolean,
+    userAuthed: { id: string, name: string, email: string },
+    localeContext: {
+        locale: string,
+        toggleLocale: () => void,
+    }
+}
+
+export default class ContactApp extends Component<unknown, ContactAppState> {
     constructor(props: unknown) {
         super(props)
         this.state = {
@@ -17,6 +27,19 @@ export default class ContactApp extends Component<unknown, {userAuthed: {id: str
                 email: '',
             },
             initializing: true,
+            localeContext: {
+                locale: 'id',
+                toggleLocale: () => {
+                    this.setState((prevState) => {
+                        return {
+                            localeContext: {
+                                ...prevState.localeContext,
+                                locale: prevState.localeContext.locale === 'id' ? 'en': 'id'
+                            }
+                        }
+                    })
+                }
+            }
         }
         this.onLoginSuccess = this.onLoginSuccess.bind(this)
         this.onLogout = this.onLogout.bind(this)
@@ -58,33 +81,37 @@ export default class ContactApp extends Component<unknown, {userAuthed: {id: str
         }
         if (!this.state.userAuthed.id && !this.state.userAuthed.email && !this.state.userAuthed.name) {
             return (
-                <div className='contact-app'>
-                    <header className='contact-app__header'>
-                        <h1>Contacts App</h1>
-                    </header>
-                    <main>
-                        <Routes>
-                            <Route path='/*' element={<LoginPage loginSuccess={this.onLoginSuccess}/>}/>
-                            <Route path='/register' element={<RegisterPage/>}/>
-                        </Routes>
-                    </main>
-                </div>
+                <LocaleProvider value={this.state.localeContext}>
+                    <div className='contact-app'>
+                        <header className='contact-app__header'>
+                            <h1>Contacts App</h1>
+                        </header>
+                        <main>
+                            <Routes>
+                                <Route path='/*' element={<LoginPage loginSuccess={this.onLoginSuccess}/>}/>
+                                <Route path='/register' element={<RegisterPage/>}/>
+                            </Routes>
+                        </main>
+                    </div>
+                </LocaleProvider>
             )
         }
 
         return (
-            <div className='contact-app'>
-                <header className='contact-app__header'>
-                    <h1>Contacts App</h1>
-                    <Navigation logout={this.onLogout} name={this.state.userAuthed.name}/>
-                </header>
-                <main>
-                    <Routes>
-                        <Route path='/' element={<HomePage/>}/>
-                        <Route path='/add' element={<AddContactPage/>}/>
-                    </Routes>
-                </main>
-            </div>
+            <LocaleProvider value={this.state.localeContext}>
+                <div className='contact-app'>
+                    <header className='contact-app__header'>
+                        <h1>Contacts App</h1>
+                        <Navigation logout={this.onLogout} name={this.state.userAuthed.name}/>
+                    </header>
+                    <main>
+                        <Routes>
+                            <Route path='/' element={<HomePage/>}/>
+                            <Route path='/add' element={<AddContactPage/>}/>
+                        </Routes>
+                    </main>
+                </div>
+            </LocaleProvider>
         )
     }
 }
