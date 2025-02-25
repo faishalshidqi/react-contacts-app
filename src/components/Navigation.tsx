@@ -7,7 +7,6 @@ export default function Navigation({logout, name}: {logout: () => void, name: st
         <LocaleConsumer>
             {
                 ({locale, toggleLocale}: {locale: string, toggleLocale: () => void}) => {
-                    console.log(locale)
                     return (
                         <nav className="navigation">
                             <ul>

@@ -101,7 +101,7 @@ export default class ContactApp extends Component<unknown, ContactAppState> {
             <LocaleProvider value={this.state.localeContext}>
                 <div className='contact-app'>
                     <header className='contact-app__header'>
-                        <h1>Contacts App</h1>
+                        <h1>{this.state.localeContext.locale === 'id' ? 'Aplikasi Kontak' : 'Contacts App'}</h1>
                         <Navigation logout={this.onLogout} name={this.state.userAuthed.name}/>
                     </header>
                     <main>
